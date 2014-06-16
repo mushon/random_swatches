@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Swatches</title>
+		<script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
+		<style type="text/css">
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+
+			//Create SVG element
+			var svg = d3.select("body")
+						.append("svg")
+						.attr("width", 3200)
+						.attr("height", 1004)
+
+			var frame = d3.select("svg")
+						.append("g")
+						.attr("class", "frame");
+
+			var swatch = d3.select("svg")
+						.append("g")
+						.attr("class", "swatch");
+
+			var label = d3.select("svg")
+						.append("g")
+						.attr("class", "label");
+
+			//Dynamic, random dataset
+			var dataset = [];											//Initialize empty array
+			var numLines = 12;  										//Number of lines
+			var numCols = 50;  										//Number of columns
+
+			for (var j = 0; j < numLines; j++) {	 //Loop through lines
+				for (var i = 0; i < numCols; i++) {	//Loop through columns
+					var pad = 4;
+					var w = 60;
+					var h = 80;
+					var x = (i * (w+pad));	//reset x
+					var y = (j * (h+pad));	//reset y
+					var p = 3;
+					var sq = w-p*2;
+					// random color:
+					var c = '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF',4);
+
+					//push them into the dataset"
+					dataset.push([x, //"x: " + x,
+												y, //"y: " + y,
+												w, //"w: " + w,
+												h, //"h: " + h,
+												sq, //"sq: " + sq,
+												p, //"p: " + p,
+												c //"c: " + c
+												]);					//Add new number to array
+				}
+			}
+
+				frame.selectAll(".box")
+					.data(dataset)
+					.enter()
+					.append("rect")
+					.attr("class", "box")
+					.attr("x", function(d) {return d[0];})
+					.attr("y", function(d) {return d[1];})
+					.attr("width", function(d) {return d[2];})
+					.attr("height", function(d) {return d[3];})
+					.attr("fill", "#fff")
+					.attr("stroke", "#ddd");
+
+				swatch.selectAll(".color")
+					.data(dataset)
+					.enter()
+					.append("rect")
+					.attr("class", "color")
+					.attr("x", function(d) {return d[0]+d[5];})
+					.attr("y", function(d) {return d[1]+d[5];})
+					.attr("width", function(d) {return d[4];})
+					.attr("height", function(d) {return d[4];})
+					.attr("fill", function(d) {return d[6];});
+
+				label.selectAll(".hex")
+					.data(dataset)
+					.enter()
+					.append("text")
+					.attr("class", "hex")
+					.attr("x", function(d) {return d[0]+d[5];})
+					.attr("y", function(d) {return d[1]+d[3]-d[5]*2;})
+					.attr("fill", "charcoal")
+					.attr("font-size", 10)
+					.attr("font-weight", "400")
+					.attr("font-family", "Open Sans Hebrew, sans-serif")
+					.text(function(d) {return d[6];});
+
+		</script>
+
+		<script type="text/javascript">
+			// Your beautiful D3 code will go here
+		</script>
+	</body>
+</html>
