@@ -28,6 +28,10 @@
 						.append("g")
 						.attr("class", "label");
 
+			var cover = d3.select("svg")
+						.append("g")
+						.attr("class", "cover");
+
 			//Dynamic, random dataset
 			var dataset = [];											//Initialize empty array
 			var numLines = 12;  										//Number of lines
@@ -44,17 +48,19 @@
 					var sq = w-p*2;
 					// random color:
 					var c = '#'+(function lol(m,s,c){return s[m.floor(m.random() * s.length)] + (c && lol(m,s,c-1));})(Math,'0123456789ABCDEF',4);
+					var show = 1;
+					if (floor(m.random()) < 0.5) { var show = 0 };
 
-					//push them into the dataset"
+					//push into the dataset"
 					dataset.push([x, //"x: " + x,
 												y, //"y: " + y,
 												w, //"w: " + w,
 												h, //"h: " + h,
 												sq, //"sq: " + sq,
 												p, //"p: " + p,
-												c //"c: " + c
+												c, //"c: " + c,
+												show // or hide
 												]);					//Add new number to array
-				}
 			}
 
 				frame.selectAll(".box")
@@ -93,6 +99,18 @@
 					.attr("font-family", "Open Sans Hebrew, sans-serif")
 					.text(function(d) {return d[6];});
 
+				cover.selectAll(".hide")
+					.data(dataset)
+					.enter()
+					.append("rect")
+					.attr("class", "hide")
+					.attr("x", function(d) {return d[0];})
+					.attr("y", function(d) {return d[1];})
+					.attr("width", function(d) {return d[2];})
+					.attr("height", function(d) {return d[3];})
+					.attr("fill", function(d) {if (d[7] = 1) { return "#fff"} else {return "none"};})
+					//.attr("stroke", "#fff")
+					;
 		</script>
 
 		<script type="text/javascript">
