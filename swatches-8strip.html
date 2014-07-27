@@ -16,11 +16,25 @@
 	<body>
 		<script type="text/javascript">
 
+			//Dynamic, random dataset
+			var dataset = [];											//Initialize empty array
+			var numLines = 8;  										//Number of lines
+
+			var pad = 4;
+			var w = 60;
+			var h = 80;
+
 			//Create SVG element
+			var extra = 10;
+
+			var wall = (48+12+12+20+32+extra)*200;
+
+			var numCols = wall/(w+pad);  									//Number of columns
+
 			var svg = d3.select("body")
 						.append("svg")
-						.attr("width", 4800)
-						.attr("height", 1004)
+						.attr("width", wall)
+						.attr("height", 800)
 
 			var frame = d3.select("svg")
 						.append("g")
@@ -38,16 +52,8 @@
 			// 			.append("g")
 			// 			.attr("class", "cover");
 
-			//Dynamic, random dataset
-			var dataset = [];											//Initialize empty array
-			var numLines = 12;  										//Number of lines
-			var numCols = 80;  										//Number of columns
-
 			for (var j = 0; j < numLines; j++) {	 //Loop through lines
 				for (var i = 0; i < numCols; i++) {	//Loop through columns
-					var pad = 4;
-					var w = 60;
-					var h = 80;
 					var x = (i * (w+pad));	//reset x
 					var y = (j * (h+pad));	//reset y
 					if (Math.random() < 0.5) { var y = -1000 };
